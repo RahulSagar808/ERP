@@ -11,8 +11,10 @@ namespace ERP.ApplicationCore.Models
         public DateTime DateOfBirth { get; set; }
         public string Gender { get; set; }
         public string Address { get; set; }
-        public string SchoolId { get; set; }
         public List<SelectListItem>? DropdownListItems { get; set; }
+        public string Id { get; set; }
+        public string SchoolId { get; set; }
+        public bool Status { get; set; } 
     }
 
     public class StudentEditModel : StudentModel
@@ -22,5 +24,6 @@ namespace ERP.ApplicationCore.Models
 
     public class StudentListModel : StudentEditModel
     {
+        public string SchoolName { get; set; }
     }
 }

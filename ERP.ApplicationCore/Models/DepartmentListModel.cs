@@ -6,5 +6,6 @@
         public string UniversityId { get; set; }
         public string Name { get; set; }
         public bool Status { get; set; }
+        public string UniversityName { get; set; }
     }
 }

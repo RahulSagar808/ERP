@@ -36,6 +36,7 @@ namespace ERP.Controllers
             {
                 UniversityListModel model = new()
                 {
+                    Id = university.Id,
                     UniversityName = university.UniversityName,
                     ContactPerson = university.ContactPerson,
                     OfficialPhone = university.OfficialPhone,
@@ -50,15 +51,22 @@ namespace ERP.Controllers
         }
 
         // DETAILS
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> UniversityDetails(string id)
         {
-            var university = await _context.Universities
-                .FirstOrDefaultAsync(x => x.Id == id);
+            var UniversityDetails = new UniversityModel();
+            var UniversityListResult = await _context.Universities.FirstOrDefaultAsync();
+            UniversityDetails.UniversityName = UniversityListResult.UniversityName;
+            UniversityDetails.ContactPerson = UniversityListResult.ContactPerson;
+            UniversityDetails.OfficialPhone = UniversityListResult.OfficialPhone;
+            UniversityDetails.OfficialMobile = UniversityListResult.OfficialMobile;
+            UniversityDetails.OfficialEmail = UniversityListResult.OfficialEmail;
+            UniversityDetails.OfficialLogo = UniversityListResult.OfficialLogo;
 
-            if (university == null)
+            if (UniversityDetails == null)
+            {
                 return NotFound();
-
-            return View(university);
+            }
+            return View(UniversityDetails);
         }
 
         // CREATE - GET
@@ -103,11 +111,20 @@ namespace ERP.Controllers
 
             var university = await _context.Universities
                                            .FirstOrDefaultAsync(x => x.Id == id);
+            var universityModel = new UniversityModel()
+            {
+                UniversityName = university.UniversityName,
+                ContactPerson = university.ContactPerson,
+                OfficialPhone = university.OfficialPhone,
+                OfficialMobile = university.OfficialMobile,
+                OfficialEmail = university.OfficialEmail,
+                OfficialLogo = university.OfficialLogo
+            };
 
             if (university == null)
                 return NotFound();
 
-            return View(university);
+            return View(universityModel);
         }
 
 
@@ -182,18 +199,40 @@ namespace ERP.Controllers
         // LIST
         public async Task<IActionResult> GetSchoolList()
         {
-            var schoolList = await _context.Schools.ToListAsync();
+            var schoolList = new List<SchoolListModel>();
+            var schoolListResult = await _context.Schools.Include("University").ToListAsync();
+            if (schoolList == null)
+            {
+                return View(schoolList);
+
+            }
+            foreach (var school in schoolListResult)
+            {
+                SchoolListModel model = new()
+                {
+                    Id = school.Id,
+                    SchoolName = school.SchoolName,
+                    UniversityId = school.UniversityId,
+                    UniversityName = school.University.UniversityName
+                };
+                schoolList.Add(model);
+            }
             return View(schoolList);
         }
 
         // DETAILS
-        public async Task<IActionResult> GetSchoolDetails(string id)
+        public async Task<IActionResult> SchoolDetails(string id)
         {
-            var school = await _context.Schools.FirstOrDefaultAsync(x => x.Id == id);
-            if (school == null)
-                return NotFound();
+            var SchoolDetails = new SchoolModel();
+            var SchoolListResult = await _context.Schools.Include("University").FirstOrDefaultAsync();
+            SchoolDetails.SchoolName = SchoolListResult.SchoolName;
+            SchoolDetails.UniversityId = SchoolListResult.UniversityId;
 
-            return View(school);
+            if (SchoolDetails == null)
+            {
+                return NotFound();
+            }
+            return View(SchoolDetails);
         }
 
         // CREATE - GET
@@ -220,6 +259,8 @@ namespace ERP.Controllers
                 School school = new School();
                 school.SchoolName = model.SchoolName;
                 school.UniversityId = model.UniversityId;
+                school.CreatedBy = CurrentUserId;
+
                 _context.Schools.Add(school);
                 var result = await _context.SaveChangesAsync();
 
@@ -241,17 +282,27 @@ namespace ERP.Controllers
 
             var school = await _context.Schools
                                        .FirstOrDefaultAsync(s => s.Id == id);
-
+            var schoolModel = new SchoolModel()
+            {
+                Id = school.Id,
+                SchoolName = school.SchoolName,
+                UniversityId = school.UniversityId,
+                DropdownListItems = _context.Universities.Select(s => new SelectListItem
+                {
+                    Value = s.Id,
+                    Text = s.UniversityName,
+                }).ToList()
+            };
             if (school == null)
                 return NotFound();
 
-            return View(school);
+            return View(schoolModel);
         }
 
         // EDIT - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditSchool(string id, School model)
+        public async Task<IActionResult> EditSchool(string id, SchoolModel model)
         {
             if (string.IsNullOrEmpty(id) || id != model.Id)
                 return NotFound();
@@ -269,7 +320,6 @@ namespace ERP.Controllers
 
             school.SchoolName = model.SchoolName;
             school.UniversityId = model.UniversityId;
-            school.Status = model.Status;
             school.UpdatedOn = DateTime.Now;
 
             var result = await _context.SaveChangesAsync();
@@ -296,24 +346,6 @@ namespace ERP.Controllers
             if (school == null)
                 return NotFound();
 
-            return View(school);
-        }
-
-
-        // DELETE - POST
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmedSchool(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-                return NotFound();
-
-            var school = await _context.Schools
-                .FirstOrDefaultAsync(s => s.Id == id);
-
-            if (school == null)
-                return NotFound();
-
             _context.Schools.Remove(school);
             var result = await _context.SaveChangesAsync();
             if (result > 0)
@@ -325,25 +357,45 @@ namespace ERP.Controllers
             return View("GetSchoolList");
         }
 
-
         //Department
         // LIST
         public async Task<IActionResult> GetDepartmentList()
         {
-            var departmentList = await _context.Departments.Include("University").ToListAsync();
+            var departmentList = new List<DepartmentListModel>();
+
+            var departmentListResult = await _context.Departments.Include("University").ToListAsync();
+            if (departmentList == null)
+            {
+                return View(departmentList);
+            }
+
+            foreach (var department in departmentListResult)
+            {
+                DepartmentListModel model = new()
+                {
+                    Id = department.Id,
+                    Name = department.Name,
+                    UniversityId = department.UniversityId,
+                    UniversityName = department.University.UniversityName
+                };
+                departmentList.Add(model);
+            }
             return View(departmentList);
         }
 
         // DETAILS
-        public async Task<IActionResult> DetailsDepartment(string id)
+        public async Task<IActionResult> DepartmentDetails(string id)
         {
-            var department = await _context.Departments
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            if (department == null)
+            var departmentDetails = new DepartmentModel();
+            var departmentListResult = await _context.Departments.Include("University").FirstOrDefaultAsync();
+            departmentDetails.Name = departmentListResult.Name;
+            departmentDetails.UniversityId = departmentListResult.UniversityId;
+           
+            if (departmentDetails == null)
+            {
                 return NotFound();
-
-            return View(department);
+            } 
+               return View(departmentDetails);
         }
 
         // CREATE - GET
@@ -360,7 +412,7 @@ namespace ERP.Controllers
             return View(departmentViewModel);
         }
 
-        // CREATE - POST
+        // CREATE - POSTF
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateDepartment(DepartmentModel model)
@@ -370,6 +422,7 @@ namespace ERP.Controllers
                 Department department = new Department();
                 department.Name = model.Name;
                 department.UniversityId = model.UniversityId;
+                department.CreatedBy = CurrentUserId;
                 _context.Departments.Add(department);
                 var result = await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Department Create successfully.";
@@ -390,17 +443,28 @@ namespace ERP.Controllers
 
             var department = await _context.Departments
                                            .FirstOrDefaultAsync(d => d.Id == id);
+            var departmentModel = new DepartmentModel()
+            {
+                Id = department.Id,
+                Name = department.Name,
+                UniversityId = department.UniversityId,
+                DropdownListItems = _context.Universities.Select(s => new SelectListItem
+                {
+                    Value = s.Id,
+                    Text = s.UniversityName,
+                }).ToList()
+            };
 
             if (department == null)
                 return NotFound();
 
-            return View(department);
+            return View(departmentModel);
         }
 
         // EDIT - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditDepartment(string id, Department model)
+        public async Task<IActionResult> EditDepartment(string id, DepartmentModel model)
         {
             if (id != model.Id)
                 return NotFound();
@@ -415,7 +479,6 @@ namespace ERP.Controllers
                 return NotFound();
             department.Name = model.Name;
             department.UniversityId = model.UniversityId;
-            department.Status = model.Status;
             department.UpdatedOn = DateTime.Now;
 
             var result = await _context.SaveChangesAsync();
@@ -428,7 +491,6 @@ namespace ERP.Controllers
             return View("GetDepartmentList");
         }
 
-
         // DELETE - GET
         [HttpGet]
         public async Task<IActionResult> DeleteDepartment(string id)
@@ -438,25 +500,6 @@ namespace ERP.Controllers
 
             var department = await _context.Departments
                 .FirstOrDefaultAsync(d => d.Id == id);
-
-            if (department == null)
-                return NotFound();
-
-            return View(department);
-        }
-
-
-        // DELETE - POST
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmedDepartment(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-                return NotFound();
-
-            var department = await _context.Departments
-                .FirstOrDefaultAsync(d => d.Id == id);
-
             if (department == null)
                 return NotFound();
 
@@ -469,7 +512,9 @@ namespace ERP.Controllers
             }
             TempData["ErrorMessage"] = "Failed to delete the Department. Please try again.";
             return View("GetDepartmentList");
+
         }
+
     }
 }
 

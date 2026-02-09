@@ -26,6 +26,11 @@ namespace ERP.ApplicationCore.Services
 
         public async Task DeleteStudentAsync(int id)
             => await _studentRepo.DeleteAsync(id);
+
+        public async Task<string?> GetStudentByIdAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
