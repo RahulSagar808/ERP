@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
+
 namespace ERP.ApplicationCore.Models
 {
     public class SchoolModel

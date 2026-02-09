@@ -13,8 +13,8 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>University Name</th>
                     <th>Department Name</th>
+                    <th>University Name</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -27,7 +27,7 @@
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Name)
+                            @Html.DisplayFor(modelItem => item.UniversityName)
                         </td>
                         <td>
                             @if (item.Status)
@@ -45,6 +45,7 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" asp-controller="Admin" asp-action="EditDepartment" asp-route-id="@item.Id"><i class="bx bx-edit-alt me-1"></i> Edit</a>
                                     <a class="dropdown-item" asp-controller="Admin" asp-action="DeleteDepartment" asp-route-id="@item.Id"><i class="bx bx-trash me-1"></i> Delete</a>
+                                    <a class="dropdown-item" asp-controller="Admin" asp-action="DepartmentDetails" asp-route-id="@item.Id"><i class="bx bx-detail me-1"></i> Details</a>
                                 </div>
                             </div>
                         </td>

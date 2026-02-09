@@ -1,0 +1,39 @@
+﻿@model ERP.ApplicationCore.Models.DepartmentModel
+
+@{
+    ViewData["Title"] = "Department Details";
+}
+
+<h2 class="mb-4">Department Details</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <div class="row mb-2">
+            <div class="col-md-4 fw-bold">Department ID :</div>
+            <div class="col-md-8">@Model.Id</div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-4 fw-bold">Department Name :</div>
+            <div class="col-md-8">@Model.Name</div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-4 fw-bold">University ID :</div>
+            <div class="col-md-8">@Model.UniversityId</div>
+        </div>
+
+        <hr />
+
+        <div class="d-flex gap-2">
+            <a asp-action="EditDepartment" asp-route-id="@Model.Id" class="btn btn-primary">
+                Edit
+            </a>
+            <a asp-action="GetDepartmentList" class="btn btn-secondary">
+                Back to List
+            </a>
+        </div>
+
+    </div>
+</div>

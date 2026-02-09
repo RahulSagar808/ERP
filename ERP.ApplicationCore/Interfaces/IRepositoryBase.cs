@@ -18,8 +18,6 @@ namespace ERP.ApplicationCore.Interfaces
             int? page = null,
             int? pageSize = null
         );
-
-        Task<IEnumerable<T>> GetAsync(string includeProperties);
     }
 }
 

@@ -1,0 +1,57 @@
+﻿@model ERP.ApplicationCore.Models.UniversityModel
+
+@{
+    ViewData["Title"] = "University Details";
+}
+
+<h2 class="mb-4">University Details</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <div class="row mb-2">
+            <div class="col-md-4 fw-bold">University Name :</div>
+            <div class="col-md-8">@Model.UniversityName</div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-4 fw-bold">Contact Person :</div>
+            <div class="col-md-8">@Model.ContactPerson</div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-4 fw-bold">Official Phone :</div>
+            <div class="col-md-8">@Model.OfficialPhone</div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-4 fw-bold">Official Mobile :</div>
+            <div class="col-md-8">@Model.OfficialMobile</div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-4 fw-bold">Official Email :</div>
+            <div class="col-md-8">@Model.OfficialEmail</div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-4 fw-bold">Official Logo :</div>
+            <div class="col-md-8">
+                @Model.OfficialLogo
+                @* If logo is an image URL, tell me — I’ll render <img> *@
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="d-flex gap-2">
+            <a asp-action="EditUniversity" asp-route-id="@Model." class="btn btn-primary">
+                Edit
+            </a>
+            <a asp-action="GetUniversityList" class="btn btn-secondary">
+                Back to List
+            </a>
+        </div>
+
+    </div>
+</div>
