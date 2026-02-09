@@ -42,12 +42,8 @@ namespace ERP.InfrastructureData.Repositories
             }
         }
 
-        public async Task<IEnumerable<T>> GetAsync(
-            Expression<Func<T, bool>>? filter = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-            string includeProperties = "",
-            int? page = null,
-            int? pageSize = null)
+        public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+            string includeProperties = "", int? page = null, int? pageSize = null)
         {
             IQueryable<T> query = _dbSet;
 
@@ -64,6 +60,31 @@ namespace ERP.InfrastructureData.Repositories
 
             if (page.HasValue && pageSize.HasValue)
                 query = query.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>>? filter, string includeProperties = "")
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (filter != null)
+                query = query.Where(filter);
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>>? filter)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (filter != null)
+                query = query.Where(filter);
 
             return await query.ToListAsync();
         }

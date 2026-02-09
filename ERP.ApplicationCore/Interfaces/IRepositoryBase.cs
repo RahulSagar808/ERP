@@ -9,8 +9,6 @@ namespace ERP.ApplicationCore.Interfaces
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(int id);
-
-        // Advanced Get with filter, order, include, pagination
         Task<IEnumerable<T>> GetAsync(
             Expression<Func<T, bool>>? filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
@@ -18,7 +16,8 @@ namespace ERP.ApplicationCore.Interfaces
             int? page = null,
             int? pageSize = null
         );
-
+        Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>>? filter, string includeProperties = "");
+        Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>>? filter);
         Task<IEnumerable<T>> GetAsync(string includeProperties);
     }
 }
