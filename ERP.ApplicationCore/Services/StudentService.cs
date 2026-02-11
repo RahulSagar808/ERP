@@ -15,7 +15,7 @@ namespace ERP.ApplicationCore.Services
         public async Task<IEnumerable<Student>> GetAllStudentsAsync()
             => await _studentRepo.GetAllAsync();
 
-        public async Task<Student?> GetStudentByIdAsync(int id)
+        public async Task<Student?> GetStudentByIdAsync(string id)
             => await _studentRepo.GetByIdAsync(id);
 
         public async Task AddStudentAsync(Student student)
@@ -24,13 +24,9 @@ namespace ERP.ApplicationCore.Services
         public async Task UpdateStudentAsync(Student student)
             => await _studentRepo.UpdateAsync(student);
 
-        public async Task DeleteStudentAsync(int id)
+        public async Task DeleteStudentAsync(string id)
             => await _studentRepo.DeleteAsync(id);
 
-        public async Task<string?> GetStudentByIdAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 

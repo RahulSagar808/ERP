@@ -100,6 +100,16 @@ namespace ERP.InfrastructureData.Repositories
 
             return await query.ToListAsync();
         }
+
+        public Task<T?> GetByIdAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

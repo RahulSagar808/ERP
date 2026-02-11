@@ -16,8 +16,10 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<StudentService>();
 builder.Services.AddScoped<DepartmentService>();
+builder.Services.AddScoped<EmployeeService>();
 
 builder.Services.AddControllersWithViews();
 

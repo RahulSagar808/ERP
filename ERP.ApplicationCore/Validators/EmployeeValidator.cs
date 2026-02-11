@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ERP.ApplicationCore.Validators
 {
-    public class StudentValidator
+    public class EmployeeValidator
     {
     }
 }

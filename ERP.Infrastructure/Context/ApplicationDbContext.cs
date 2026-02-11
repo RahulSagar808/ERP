@@ -13,5 +13,6 @@ namespace ERP.Infrastructure.Context
         public DbSet<University> Universities { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<School> Schools { get; set; }
+        public DbSet<Employee> Employees { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model ERP.ApplicationCore.Models.UniversityModel
+﻿@model ERP.ApplicationCore.Models.UniversityEditModel
 
 @{
     ViewData["Title"] = "University Details";
@@ -45,7 +45,7 @@
         <hr />
 
         <div class="d-flex gap-2">
-            <a asp-action="EditUniversity" asp-route-id="@Model." class="btn btn-primary">
+            <a asp-action="EditUniversity" asp-route-id="@Model.Id" class="btn btn-primary">
                 Edit
             </a>
             <a asp-action="GetUniversityList" class="btn btn-secondary">

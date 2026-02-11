@@ -53,7 +53,7 @@ namespace ERP.Controllers
         // DETAILS
         public async Task<IActionResult> UniversityDetails(string id)
         {
-            var UniversityDetails = new UniversityModel();
+            var UniversityDetails = new UniversityEditModel();
             var UniversityListResult = await _context.Universities.FirstOrDefaultAsync();
             UniversityDetails.UniversityName = UniversityListResult.UniversityName;
             UniversityDetails.ContactPerson = UniversityListResult.ContactPerson;
@@ -61,6 +61,7 @@ namespace ERP.Controllers
             UniversityDetails.OfficialMobile = UniversityListResult.OfficialMobile;
             UniversityDetails.OfficialEmail = UniversityListResult.OfficialEmail;
             UniversityDetails.OfficialLogo = UniversityListResult.OfficialLogo;
+            UniversityDetails.Id = UniversityListResult.Id;
 
             if (UniversityDetails == null)
             {
@@ -223,11 +224,11 @@ namespace ERP.Controllers
         // DETAILS
         public async Task<IActionResult> SchoolDetails(string id)
         {
-            var SchoolDetails = new SchoolModel();
+            var SchoolDetails = new SchoolListModel();
             var SchoolListResult = await _context.Schools.Include("University").FirstOrDefaultAsync();
             SchoolDetails.SchoolName = SchoolListResult.SchoolName;
             SchoolDetails.UniversityId = SchoolListResult.UniversityId;
-
+            SchoolDetails.Id = SchoolListResult.Id;
             if (SchoolDetails == null)
             {
                 return NotFound();
@@ -386,11 +387,11 @@ namespace ERP.Controllers
         // DETAILS
         public async Task<IActionResult> DepartmentDetails(string id)
         {
-            var departmentDetails = new DepartmentModel();
+            var departmentDetails = new DepartmentListModel();
             var departmentListResult = await _context.Departments.Include("University").FirstOrDefaultAsync();
             departmentDetails.Name = departmentListResult.Name;
             departmentDetails.UniversityId = departmentListResult.UniversityId;
-           
+            departmentDetails.Id = departmentListResult.Id;
             if (departmentDetails == null)
             {
                 return NotFound();
