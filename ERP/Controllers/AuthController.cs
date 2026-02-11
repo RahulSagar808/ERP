@@ -1,17 +1,21 @@
 using ERP.ApplicationCore.Models;
 using ERP.Domain.Entities;
-using ERP.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 
 namespace ERP.Controllers;
 public class AuthController : Controller
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
-    public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
-    { _userManager = userManager; _signInManager = signInManager; }
+    private readonly IToastNotification _toastNotification;
+    public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IToastNotification toastNotification)
+    {
+        _userManager = userManager; _signInManager = signInManager;
+        _toastNotification = toastNotification;
+    }
     public IActionResult ForgotPasswordBasic() => View();
     public IActionResult LoginBasic() => View();
     [HttpPost]
@@ -32,10 +36,20 @@ public class AuthController : Controller
         {
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
+            {
+                _toastNotification.AddSuccessToastMessage("Logged in successfully");
                 return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                _toastNotification.AddErrorToastMessage("Invalid login attempt");
+            }
+        }
+        else
+        {
+            _toastNotification.AddErrorToastMessage("Invalid login attempt");
         }
 
-        ModelState.AddModelError("", "Invalid login attempt");
         return View(model);
     }
 
@@ -58,6 +72,7 @@ public class AuthController : Controller
         if (result.Succeeded)
         {
             await _signInManager.SignInAsync(user, isPersistent: false);
+            _toastNotification.AddSuccessToastMessage("Registration successful");
             return RedirectToAction("Index", "Home");
         }
 
@@ -109,6 +124,7 @@ public class AuthController : Controller
         await _signInManager.ForgetTwoFactorClientAsync();
         await _signInManager.RefreshSignInAsync(user);
 
+        _toastNotification.AddSuccessToastMessage("Password changed successfully");
         return RedirectToAction("LoginBasic");
     }
 }

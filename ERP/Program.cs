@@ -6,6 +6,7 @@ using ERP.Infrastructure.Repositories;
 using ERP.InfrastructureData.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,15 @@ builder.Services.AddScoped<StudentService>();
 builder.Services.AddScoped<DepartmentService>();
 builder.Services.AddScoped<EmployeeService>();
 
-builder.Services.AddControllersWithViews();
+// Register NToastNotify for MVC controllers & views
+builder.Services.AddControllersWithViews().AddNToastNotifyToastr(new ToastrOptions()
+{
+    ProgressBar = true,
+    PositionClass = ToastPositions.BottomLeft
+});
+
+// Keep Razor Pages registration if you need it elsewhere
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -29,16 +38,15 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseNToastNotify();
 
 app.MapControllerRoute(
     name: "default",

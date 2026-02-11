@@ -21,7 +21,6 @@ namespace ERP.Controllers
             return View(await _context.Universities.ToListAsync());
         }
 
-        // LIST
         public async Task<IActionResult> GetUniversityList()
         {
             var universityList = new List<UniversityListModel>();
@@ -42,7 +41,8 @@ namespace ERP.Controllers
                     OfficialPhone = university.OfficialPhone,
                     OfficialMobile = university.OfficialMobile,
                     OfficialEmail = university.OfficialEmail,
-                    OfficialLogo = university.OfficialLogo
+                    OfficialLogo = university.OfficialLogo,
+                    Status = university.Status
                 };
                 universityList.Add(model);
             }
@@ -50,7 +50,6 @@ namespace ERP.Controllers
             return View(universityList);
         }
 
-        // DETAILS
         public async Task<IActionResult> UniversityDetails(string id)
         {
             var UniversityDetails = new UniversityEditModel();
@@ -70,13 +69,11 @@ namespace ERP.Controllers
             return View(UniversityDetails);
         }
 
-        // CREATE - GET
         public IActionResult Create()
         {
             return View();
         }
 
-        // CREATE - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UniversityModel model)
@@ -104,7 +101,6 @@ namespace ERP.Controllers
         }
 
 
-        // EDIT - GET
         public async Task<IActionResult> EditUniversity(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -129,7 +125,6 @@ namespace ERP.Controllers
         }
 
 
-        // EDIT - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditUniversity(string id, UniversityModel model)
@@ -165,7 +160,6 @@ namespace ERP.Controllers
             return View("GetUniversityList");
         }
 
-        // DELETE - GET
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
@@ -196,8 +190,6 @@ namespace ERP.Controllers
         }
 
 
-        //SachoolMaster
-        // LIST
         public async Task<IActionResult> GetSchoolList()
         {
             var schoolList = new List<SchoolListModel>();
@@ -214,14 +206,14 @@ namespace ERP.Controllers
                     Id = school.Id,
                     SchoolName = school.SchoolName,
                     UniversityId = school.UniversityId,
-                    UniversityName = school.University.UniversityName
+                    UniversityName = school.University.UniversityName,
+                    Status = school.Status
                 };
                 schoolList.Add(model);
             }
             return View(schoolList);
         }
 
-        // DETAILS
         public async Task<IActionResult> SchoolDetails(string id)
         {
             var SchoolDetails = new SchoolListModel();
@@ -236,7 +228,6 @@ namespace ERP.Controllers
             return View(SchoolDetails);
         }
 
-        // CREATE - GET
         public IActionResult CreateSchool()
         {
             SchoolModel schoolViewModel = new SchoolModel
@@ -250,7 +241,6 @@ namespace ERP.Controllers
             return View(schoolViewModel);
         }
 
-        // CREATE - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateSchool(SchoolModel model)
@@ -275,7 +265,6 @@ namespace ERP.Controllers
         }
 
 
-        // EDIT - GET
         public async Task<IActionResult> EditSchool(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -334,7 +323,6 @@ namespace ERP.Controllers
         }
 
 
-        // DELETE - GET
         [HttpGet]
         public async Task<IActionResult> DeleteSchool(string id)
         {
@@ -358,8 +346,6 @@ namespace ERP.Controllers
             return View("GetSchoolList");
         }
 
-        //Department
-        // LIST
         public async Task<IActionResult> GetDepartmentList()
         {
             var departmentList = new List<DepartmentListModel>();
@@ -377,14 +363,14 @@ namespace ERP.Controllers
                     Id = department.Id,
                     Name = department.Name,
                     UniversityId = department.UniversityId,
-                    UniversityName = department.University.UniversityName
+                    UniversityName = department.University.UniversityName,
+                    Status = department.Status
                 };
                 departmentList.Add(model);
             }
             return View(departmentList);
         }
 
-        // DETAILS
         public async Task<IActionResult> DepartmentDetails(string id)
         {
             var departmentDetails = new DepartmentListModel();
@@ -399,7 +385,6 @@ namespace ERP.Controllers
                return View(departmentDetails);
         }
 
-        // CREATE - GET
         public IActionResult CreateDepartment()
         {
             DepartmentModel departmentViewModel = new DepartmentModel
@@ -413,7 +398,6 @@ namespace ERP.Controllers
             return View(departmentViewModel);
         }
 
-        // CREATE - POSTF
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateDepartment(DepartmentModel model)
@@ -436,7 +420,6 @@ namespace ERP.Controllers
             return View(model);
         }
 
-        // EDIT - GET
         public async Task<IActionResult> EditDepartment(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -462,7 +445,6 @@ namespace ERP.Controllers
             return View(departmentModel);
         }
 
-        // EDIT - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditDepartment(string id, DepartmentModel model)
@@ -492,7 +474,6 @@ namespace ERP.Controllers
             return View("GetDepartmentList");
         }
 
-        // DELETE - GET
         [HttpGet]
         public async Task<IActionResult> DeleteDepartment(string id)
         {
@@ -513,9 +494,7 @@ namespace ERP.Controllers
             }
             TempData["ErrorMessage"] = "Failed to delete the Department. Please try again.";
             return View("GetDepartmentList");
-
         }
-
     }
 }
 
