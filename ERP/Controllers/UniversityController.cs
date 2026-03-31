@@ -11,7 +11,7 @@ namespace ERP.Controllers
             return View();
         }
 
-        public IActionResult GetUniversityList()
+        public IActionResult Universities()
         {
             return View();
         }

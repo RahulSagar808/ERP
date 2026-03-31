@@ -21,7 +21,7 @@ namespace ERP.Controllers
             return View(await _context.Universities.ToListAsync());
         }
 
-        public async Task<IActionResult> GetUniversityList()
+        public async Task<IActionResult> Universities()
         {
             var universityList = new List<UniversityListModel>();
 
@@ -69,14 +69,14 @@ namespace ERP.Controllers
             return View(UniversityDetails);
         }
 
-        public IActionResult Create()
+        public IActionResult CreateUniversity()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UniversityModel model)
+        public async Task<IActionResult> CreateUniversity(UniversityModel model)
         {
 
             if (ModelState.IsValid)
@@ -93,7 +93,7 @@ namespace ERP.Controllers
                 var result = await _context.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return RedirectToAction("GetUniversityList");
+                    return RedirectToAction("Universities");
                 }
                 return View(model);
             }
@@ -154,10 +154,10 @@ namespace ERP.Controllers
             if (result > 0)
             {
                 TempData["SuccessMessage"] = "University Edit successfully.";
-                return RedirectToAction("GetUniversityList");
+                return RedirectToAction("Universities");
             }
             TempData["ErrorMessage"] = "Failed to Edit the university. Please try again.";
-            return View("GetUniversityList");
+            return View("Universities");
         }
 
         [HttpGet]
@@ -183,14 +183,14 @@ namespace ERP.Controllers
             if (result > 0)
             {
                 TempData["SuccessMessage"] = "University delete successfully.";
-                return RedirectToAction("GetUniversityList");
+                return RedirectToAction("Universities");
             }
             TempData["ErrorMessage"] = "Failed to delete the university. Please try again.";
-            return View("GetUniversityList");
+            return View("Universities");
         }
 
 
-        public async Task<IActionResult> GetSchoolList()
+        public async Task<IActionResult> Schools()
         {
             var schoolList = new List<SchoolListModel>();
             var schoolListResult = await _context.Schools.Include("University").ToListAsync();
@@ -257,7 +257,7 @@ namespace ERP.Controllers
 
                 if (result > 0)
                 {
-                    return RedirectToAction("GetSchoolList");
+                    return RedirectToAction("Schools");
                 }
                 return View(model);
             }
@@ -316,10 +316,10 @@ namespace ERP.Controllers
             if (result > 0)
             {
                 TempData["SuccessMessage"] = "School Edit successfully.";
-                return RedirectToAction("GetSchoolList");
+                return RedirectToAction("Schools");
             }
             TempData["ErrorMessage"] = "Failed to Edit the School. Please try again.";
-            return View("GetSchoolList");
+            return View("Schools");
         }
 
 
@@ -340,13 +340,13 @@ namespace ERP.Controllers
             if (result > 0)
             {
                 TempData["SuccessMessage"] = "School delete successfully.";
-                return RedirectToAction("GetSchoolList");
+                return RedirectToAction("Schools");
             }
             TempData["ErrorMessage"] = "Failed to delete the School. Please try again.";
-            return View("GetSchoolList");
+            return View("Schools");
         }
 
-        public async Task<IActionResult> GetDepartmentList()
+        public async Task<IActionResult> Departments()
         {
             var departmentList = new List<DepartmentListModel>();
 
@@ -413,7 +413,7 @@ namespace ERP.Controllers
                 TempData["SuccessMessage"] = "Department Create successfully.";
                 if (result > 0)
                 {
-                    return RedirectToAction("GetDepartmentList");
+                    return RedirectToAction("Departments");
                 }
                 return View(model);
             }
@@ -468,10 +468,10 @@ namespace ERP.Controllers
             if (result > 0)
             {
                 TempData["SuccessMessage"] = "Department Edit successfully.";
-                return RedirectToAction("GetDepartmentList");
+                return RedirectToAction("Departments");
             }
             TempData["ErrorMessage"] = "Failed to Edit the Department. Please try again.";
-            return View("GetDepartmentList");
+            return View("Departments");
         }
 
         [HttpGet]
@@ -490,10 +490,10 @@ namespace ERP.Controllers
             if (result > 0)
             {
                 TempData["SuccessMessage"] = "Department deleted successfully.";
-                return RedirectToAction("GetDepartmentList");
+                return RedirectToAction("Departments");
             }
             TempData["ErrorMessage"] = "Failed to delete the Department. Please try again.";
-            return View("GetDepartmentList");
+            return View("Departments");
         }
     }
 }

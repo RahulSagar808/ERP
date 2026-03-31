@@ -63,24 +63,24 @@
     </li>
         @*  Create all desboard *@
 
-        <li class='menu-item@(currentPage.StartsWith("/Admin/GetUniversityList") || currentPage.StartsWith("/Admin/Create") ? " active open" : "")'>
-            <a asp-Controller="Admin" asp-action="GetUniversityList" class="menu-link">
+        <li class='menu-item@(currentPage.StartsWith("/Admin/Universities") || currentPage.StartsWith("/Admin/Create") ? " active open" : "")'>
+            <a asp-Controller="Admin" asp-action="Universities" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div>University</div>
             </a>
 
         </li>
 
-        <li class='menu-item@(currentPage.StartsWith("/Admin/GetDepartmentList") || currentPage.StartsWith("/Admin/CreateDepartment") ? " active open" : "")'>
-            <a asp-Controller="Admin" asp-action="GetDepartmentList" class="menu-link">
+        <li class='menu-item@(currentPage.StartsWith("/Admin/Departments") || currentPage.StartsWith("/Admin/CreateDepartment") ? " active open" : "")'>
+            <a asp-Controller="Admin" asp-action="Departments" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div>Department</div>
             </a>
 
         </li>
 
-        <li class='menu-item@(currentPage.StartsWith("/Admin/GetSchoolList") || currentPage.StartsWith("/Admin/CreateSchool") ? " active open" : "")'>
-            <a asp-Controller="Admin" asp-action="GetSchoolList" class="menu-link">
+        <li class='menu-item@(currentPage.StartsWith("/Admin/Schools") || currentPage.StartsWith("/Admin/CreateSchool") ? " active open" : "")'>
+            <a asp-Controller="Admin" asp-action="Schools" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div>Schools</div>
             </a>
